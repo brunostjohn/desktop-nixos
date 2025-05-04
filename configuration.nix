@@ -22,7 +22,7 @@
           insmod fat
           insmod search_fs_uuid
           insmod chain
-          search --fs-uuid --set=root 3180d0c4-58fe-43a6-b4a0-21e7bd7801a4
+          search --fs-uuid --set=root 8B28-454B
           chainloader /EFI/Microsoft/Boot/bootmgfw.efi
         }
       '';
