@@ -20,6 +20,11 @@
       protonup-qt
       protontricks
       lutris
+      yt-dlp
+      ffmpeg-full
+      bambu-studio
+      openboardview
+      okular
       (heroic.override { extraPkgs = pkgs: with pkgs; [ gamescope gamemode ]; })
     ];
 
@@ -32,7 +37,13 @@
     enable = true;
     userName = "Bruno St John";
     userEmail = "brunost.john@icloud.com";
-    extraConfig = { init.defaultBranch = "main"; };
+    extraConfig = {
+      init.defaultBranch = "main";
+      push = { autoSetupRemote = true; };
+      credential.helper = "${
+          pkgs.git.override { withLibsecret = true; }
+        }/bin/git-credential-libsecret";
+    };
   };
   programs.plasma = {
     enable = true;

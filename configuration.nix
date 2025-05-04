@@ -1,7 +1,11 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix ];
+  imports = [
+    ./hardware-configuration.nix
+    inputs.nix-gaming.nixosModules.pipewireLowLatency
+    inputs.nix-gaming.nixosModules.platformOptimizations
+  ];
 
   boot.loader = {
     efi = {
@@ -28,18 +32,39 @@
   nix.settings = {
     experimental-features = [ "nix-command" "flakes" ];
     auto-optimise-store = true;
+    substituters = [ "https://nix-gaming.cachix.org" ];
+    trusted-public-keys = [
+      "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
+    ];
   };
-
+  services.fstrim.enable = true;
   nix.gc = {
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 15d";
   };
   networking.networkmanager.enable = true;
-
+  hardware.steam-hardware.enable = true;
   time.timeZone = "Europe/Dublin";
 
   i18n.defaultLocale = "en_IE.UTF-8";
+  zramSwap = {
+    enable = true;
+    algorithm = "lz4";
+  };
+  fonts = {
+    fontDir.enable = true;
+    packages = with pkgs; [
+      inputs.apple-emoji.packages.${pkgs.system}.apple-emoji-linux
+      noto-fonts
+      noto-fonts-cjk-sans
+      liberation_ttf
+      fira-code
+      fira-code-symbols
+      mplus-outline-fonts.githubRelease
+      dina-font
+    ];
+  };
 
   i18n.extraLocaleSettings = {
     LC_ADDRESS = "en_IE.UTF-8";
@@ -80,6 +105,7 @@
     settingsSha256 = "sha256-6n9mVkEL39wJj5FB1HBml7TTJhNAhS/j5hqpNGFQE4w=";
     persistencedSha256 = "sha256-dgmco+clEIY8bedxHC4wp+fH5JavTzyI1BI8BxoeJJI=";
   };
+  boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
   hardware.nvidia.open = true;
   boot.initrd.kernelModules = [ "nvidia" ];
   boot.extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
@@ -93,7 +119,7 @@
     "udev.log_priority=3"
     "rd.systemd.show_status=auto"
   ];
-
+  boot.kernelModules = [ "ntsync" ];
   boot.plymouth = {
     enable = true;
     theme = "breeze";
@@ -113,6 +139,12 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
+
+    lowLatency = {
+      enable = true;
+      quantum = 64;
+      rate = 48000;
+    };
   };
 
   users.users.brunostjohn = {
@@ -146,6 +178,7 @@
     remotePlay.openFirewall = true;
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
+    platformOptimizations.enable = true;
   };
   programs.appimage.enable = true;
   programs.appimage.binfmt = true;
