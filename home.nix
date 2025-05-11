@@ -131,6 +131,7 @@
         "zen.widget.linux.transparency" = true;
         "zen.theme.gradient.show-custom-colors" = true;
         "zen.view.grey-out-inactive-windows" = false;
+        "font.name-list.emoji" = "Apple Color Emoji";
       };
     };
   };
