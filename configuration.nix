@@ -173,6 +173,8 @@
     wget
     lm_sensors
     mangohud
+    kde-rounded-corners
+    inputs.kwin-force-blur.packages.${system}.default
     (stdenv.mkDerivation rec {
       pname = "vulkan-hdr-layer";
       version = "63d2eec";

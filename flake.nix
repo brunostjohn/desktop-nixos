@@ -29,7 +29,10 @@
     apple-emoji = {
       url = "github:samuelngs/apple-emoji-linux";
       inputs.nixpkgs.follows = "nixpkgs";
-      # inputs.treefmt-nix.inputs.nixpkgs.follows = "nixpkgs";
+    };
+    kwin-force-blur = {
+      url = "github:taj-ny/kwin-effects-forceblur";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 

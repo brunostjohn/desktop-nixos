@@ -22,10 +22,12 @@
       lutris
       yt-dlp
       ffmpeg-full
-      bambu-studio
       openboardview
+      obs-studio
       okular
+      kicad
       (heroic.override { extraPkgs = pkgs: with pkgs; [ gamescope gamemode ]; })
+      bambu-studio
     ];
 
     username = "brunostjohn";
@@ -126,6 +128,9 @@
         "toolkit.telemetry.unifiedIsOptIn" = false;
         "toolkit.telemetry.updatePing.enabled" = false;
         "privacy.trackingprotection.enabled" = true;
+        "zen.widget.linux.transparency" = true;
+        "zen.theme.gradient.show-custom-colors" = true;
+        "zen.view.grey-out-inactive-windows" = false;
       };
     };
   };
