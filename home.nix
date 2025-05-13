@@ -28,6 +28,7 @@
       kicad
       (heroic.override { extraPkgs = pkgs: with pkgs; [ gamescope gamemode ]; })
       bambu-studio
+      pokeget-rs
     ];
 
     username = "brunostjohn";
@@ -148,6 +149,10 @@
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
+    enableSyntaxHighlighting = true;
+    initExtra = ''
+      pokeget --hide-name random
+    '';
 
     shellAliases = {
       ll = "ls -l";
