@@ -18,6 +18,7 @@ in {
       wallpaper-engine-kde-plugin
       kdePackages.qtwebsockets
       kdePackages.qtwebchannel
+      kdePackages.qtmultimedia
       (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
     ];
 
