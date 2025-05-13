@@ -1,72 +1,6 @@
-{ pkgs, inputs, ... }: {
-  home = {
-    packages = with pkgs; [
-      fastfetch
-      code-cursor
-      nixfmt-classic
-      nixd
-      gh
-      ghostty
-      zip
-      xz
-      unzip
-      p7zip
-      apple-cursor
-      vesktop
-      caprine-bin
-      signal-desktop
-      prismlauncher
-      htop
-      protonup-qt
-      protontricks
-      lutris
-      yt-dlp
-      ffmpeg-full
-      openboardview
-      obs-studio
-      okular
-      kicad
-      (heroic.override { extraPkgs = pkgs: with pkgs; [ gamescope gamemode ]; })
-      bambu-studio
-      pokeget-rs
-    ];
+{ pkgs, inputs, ... }:
 
-    username = "brunostjohn";
-    homeDirectory = "/home/brunostjohn";
-    stateVersion = "24.11";
-  };
-  programs.home-manager.enable = true;
-  programs.git = {
-    enable = true;
-    userName = "Bruno St John";
-    userEmail = "brunost.john@icloud.com";
-    extraConfig = {
-      init.defaultBranch = "main";
-      push = { autoSetupRemote = true; };
-      credential.helper = "${
-          pkgs.git.override { withLibsecret = true; }
-        }/bin/git-credential-libsecret";
-    };
-  };
-  programs.plasma = {
-    enable = true;
-    workspace = {
-      clickItemTo = "select";
-      lookAndFeel = "org.kde.breezedark.desktop";
-      cursor.theme = "macOS";
-      # iconTheme = "Papirus-Dark";
-      wallpaper =
-        "${pkgs.kdePackages.plasma-workspace-wallpapers}/share/wallpapers/Patak/contents/images/1080x1920.png";
-    };
-    configFile = {
-      "baloofilerc"."Basic Settings"."Indexing-Enabled" = false;
-      "kwinrc"."org.kde.kdecoration2"."ButtonsOnLeft" = "SF";
-      "kwinrc"."Desktops"."Number" = {
-        value = 8;
-        immutable = true;
-      };
-    };
-  };
+{
   programs.zen-browser = {
     enable = true;
     nativeMessagingHosts = [ pkgs.firefoxpwa ];
@@ -142,33 +76,5 @@
     "text/svg" = [ "zen-beta.desktop" ];
     "x-scheme-handler/http" = [ "zen-beta.desktop" ];
     "x-scheme-handler/https" = [ "zen-beta.desktop" ];
-  };
-
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-    enableSyntaxHighlighting = true;
-    initExtra = ''
-      pokeget --hide-name random
-    '';
-
-    shellAliases = {
-      ll = "ls -l";
-      edit = "sudo -e";
-      update = "sudo nixos-rebuild switch";
-    };
-
-    history.size = 10000;
-    history.ignoreAllDups = true;
-    history.path = "$HOME/.zsh_history";
-    history.ignorePatterns = [ "rm *" "pkill *" "cp *" ];
-
-    oh-my-zsh = {
-      enable = true;
-      plugins = [ "git" ];
-      theme = "fino-time";
-    };
   };
 }

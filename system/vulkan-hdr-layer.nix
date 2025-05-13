@@ -1,7 +1,6 @@
-{ lib, stdenv, fetchFromGitHub, meson, pkg-config, vulkan-loader, ninja
-, writeText, vulkan-headers, vulkan-utility-libraries, jq, libX11, libXrandr
-, libxcb, wayland }:
+{ pkgs, ... }:
 
+with pkgs;
 stdenv.mkDerivation rec {
   pname = "vulkan-hdr-layer";
   version = "63d2eec";
@@ -24,9 +23,10 @@ stdenv.mkDerivation rec {
     vulkan-headers
     vulkan-loader
     vulkan-utility-libraries
-    libX11
-    libXrandr
-    libxcb
+    xorg.libX11
+    xorg.libXrandr
+    wayland-scanner
+    xorg.libxcb
     wayland
   ];
 
