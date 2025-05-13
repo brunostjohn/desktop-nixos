@@ -1,9 +1,6 @@
 { pkgs, inputs, ... }:
 
-let
-  wallpaper-engine-kde-plugin =
-    import ./wallpaper-engine-kde-plugin.nix { inherit pkgs; };
-  vulkan-hdr-layer = import ./vulkan-hdr-layer.nix { inherit pkgs; };
+let vulkan-hdr-layer = import ./vulkan-hdr-layer.nix { inherit pkgs; };
 in {
   imports = [
     ./hardware-configuration.nix
@@ -16,6 +13,7 @@ in {
     ./gaming.nix
     ./user.nix
     ./networking.nix
+    ./wallpaper-engine-kde-plugin.nix
     inputs.nix-gaming.nixosModules.pipewireLowLatency
     inputs.nix-gaming.nixosModules.platformOptimizations
   ];
@@ -50,14 +48,17 @@ in {
     mangohud
     kde-rounded-corners
     inputs.kwin-force-blur.packages.${system}.default
-    wallpaper-engine-kde-plugin
     vulkan-hdr-layer
+    qt6.qtwebsockets
+    (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
   ];
 
   programs.appimage.enable = true;
   programs.appimage.binfmt = true;
   services.flatpak.enable = true;
   programs.java.enable = true;
+
+  nixos.pkgs = { wallpaper-engine-kde-plugin.enable = true; };
 
   system.stateVersion = "24.11";
 }
