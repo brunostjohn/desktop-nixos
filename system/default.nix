@@ -50,6 +50,7 @@ in {
     inputs.kwin-force-blur.packages.${system}.default
     vulkan-hdr-layer
     qt6.qtwebsockets
+    qt6.qtmultimedia
     (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
   ];
 
