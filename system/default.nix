@@ -51,6 +51,7 @@ in {
     vulkan-hdr-layer
     qt6.qtwebsockets
     qt6.qtmultimedia
+    qt6.qtwebengine
     (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
   ];
 

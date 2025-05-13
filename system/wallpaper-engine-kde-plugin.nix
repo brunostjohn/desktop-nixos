@@ -19,6 +19,7 @@ in {
       kdePackages.qtwebsockets
       kdePackages.qtwebchannel
       kdePackages.qtmultimedia
+      kdePackages.qtwebengine
       (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
     ];
 
