@@ -16,7 +16,6 @@
       unzip
       p7zip
       apple-cursor
-      vesktop
       caprine-bin
       signal-desktop
       prismlauncher
@@ -34,6 +33,7 @@
       bambu-studio
       pokeget-rs
       linux-wallpaperengine
+      discord
     ];
 
     username = "brunostjohn";

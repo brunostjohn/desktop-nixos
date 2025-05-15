@@ -25,6 +25,9 @@
       defaultFonts = { emoji = [ "Apple Color Emoji" ]; };
       useEmbeddedBitmaps = true;
       localConf = ''
+        <?xml version="1.0"?>
+        <!DOCTYPE fontconfig SYSTEM "urn:fontconfig:fonts.dtd">
+        <fontconfig>
           <alias>
             <family>serif</family>
             <prefer><family>Noto Serif</family></prefer>
@@ -75,7 +78,8 @@
             <family>Segoe UI Emoji</family>
             <prefer><family>Apple Color Emoji</family></prefer>
             <default><family>emoji</family></default>
-        </alias>
+          </alias>
+        </fontconfig>
       '';
     };
   };
