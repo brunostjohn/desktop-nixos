@@ -16,7 +16,7 @@
           insmod fat
           insmod search_fs_uuid
           insmod chain
-          search --fs-uuid --set=root 8B28-454B
+          search --fs-uuid --set=root D8E5-486A
           chainloader /EFI/Microsoft/Boot/bootmgfw.efi
         }
       '';
@@ -24,6 +24,7 @@
   };
 
   boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
+  services.scx.enable = true;
   boot.kernelParams = [
     "nvidia_drm.fbdev=1"
     "nvidia-drm.modeset=1"

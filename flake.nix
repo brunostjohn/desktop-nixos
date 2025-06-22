@@ -31,7 +31,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     kwin-force-blur = {
-      url = "github:taj-ny/kwin-effects-forceblur";
+      url =
+        "github:taj-ny/kwin-effects-forceblur?ref=fea9f80f27389aa8a62befb5babf40b28fed328d";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

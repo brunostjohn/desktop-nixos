@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, inputs, lib, config, ... }:
 
 let vulkan-hdr-layer = import ./vulkan-hdr-layer.nix { inherit pkgs; };
 in {
@@ -17,6 +17,8 @@ in {
     inputs.nix-gaming.nixosModules.pipewireLowLatency
     inputs.nix-gaming.nixosModules.platformOptimizations
   ];
+
+  nixpkgs.config.permittedInsecurePackages = [ "electron-33.4.11" ];
 
   services.fstrim.enable = true;
 
@@ -41,19 +43,26 @@ in {
     enableOnBoot = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    git
-    wget
-    lm_sensors
-    mangohud
-    kde-rounded-corners
-    inputs.kwin-force-blur.packages.${system}.default
-    vulkan-hdr-layer
-    qt6.qtwebsockets
-    qt6.qtmultimedia
-    qt6.qtwebengine
-    (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
-  ];
+  environment.systemPackages =
+    let nvidiaEnabled = lib.elem "nvidia" config.services.xserver.videoDrivers;
+    in (with pkgs; [
+      git
+      wget
+      lm_sensors
+      mangohud
+      kde-rounded-corners
+      inputs.kwin-force-blur.packages.${system}.default
+      vulkan-hdr-layer
+      qt6.qtwebsockets
+      qt6.qtmultimedia
+      nixpkgs-fmt
+      qt6.qtwebengine
+      (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
+    ]) ++ lib.optionals nvidiaEnabled [
+      (config.hardware.nvidia.package.settings.overrideAttrs (oldAttrs: {
+        buildInputs = oldAttrs.buildInputs ++ [ pkgs.vulkan-headers ];
+      }))
+    ];
 
   programs.appimage.enable = true;
   programs.appimage.binfmt = true;
