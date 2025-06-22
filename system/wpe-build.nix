@@ -25,18 +25,18 @@ stdenv.mkDerivation rec {
 
   buildInputs = [ mpv lz4 vulkan-headers vulkan-tools vulkan-loader ]
     ++ (with kdePackages;
-      with qt6Packages; [
-        qtbase
-        qt6.full
-        kpackage
-        kdeclarative
-        libplasma
-        qtwebsockets
-        qtwebengine
-        qtwebchannel
-        qtmultimedia
-        qtdeclarative
-      ])
+    with qt6Packages; [
+      qtbase
+      qt6.full
+      kpackage
+      kdeclarative
+      libplasma
+      qtwebsockets
+      qtwebengine
+      qtwebchannel
+      qtmultimedia
+      qtdeclarative
+    ])
     ++ [ (python3.withPackages (python-pkgs: [ python-pkgs.websockets ])) ];
 
   cmakeFlags = [ "-DUSE_PLASMAPKG=OFF" ];
