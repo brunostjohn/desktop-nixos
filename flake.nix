@@ -2,9 +2,9 @@
   description = "System configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     plasma-manager = {
@@ -49,7 +49,7 @@
         home-manager.nixosModules.home-manager
         {
           home-manager.sharedModules = [
-            inputs.plasma-manager.homeManagerModules.plasma-manager
+            inputs.plasma-manager.homeModules.plasma-manager
             inputs.zen-browser.homeModules.beta
             chaotic.homeManagerModules.default
           ];

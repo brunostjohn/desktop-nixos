@@ -4,7 +4,8 @@
     enableCompletion = true;
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
-    initExtra = ''
+    initContent = ''
+      alias cat=bat
       pokeget --hide-name random
     '';
 

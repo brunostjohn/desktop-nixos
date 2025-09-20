@@ -1,6 +1,8 @@
 { pkgs, inputs, lib, config, ... }:
 
-let vulkan-hdr-layer = import ./vulkan-hdr-layer.nix { inherit pkgs; };
+let
+  vulkan-hdr-layer = import ./vulkan-hdr-layer.nix { inherit pkgs; };
+  kernel = pkgs.linuxPackages_cachyos-gcc.kernel;
 in {
   imports = [
     ./hardware-configuration.nix
@@ -43,6 +45,8 @@ in {
     enableOnBoot = true;
   };
 
+  system.modulesTree = [ (lib.getOutput "modules" kernel) ];
+
   environment.systemPackages =
     let nvidiaEnabled = lib.elem "nvidia" config.services.xserver.videoDrivers;
     in (with pkgs; [
@@ -55,6 +59,7 @@ in {
       vulkan-hdr-layer
       qt6.qtwebsockets
       qt6.qtmultimedia
+      # proton-cachyos_x86_64_v4
       nixpkgs-fmt
       qt6.qtwebengine
       (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
@@ -71,5 +76,5 @@ in {
 
   nixos.pkgs = { wallpaper-engine-kde-plugin.enable = true; };
 
-  system.stateVersion = "24.11";
+  system.stateVersion = "25.05";
 }

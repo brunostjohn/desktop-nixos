@@ -7,6 +7,7 @@
     packages = with pkgs; [
       fastfetch
       code-cursor
+      bat
       nixfmt-classic
       nixd
       gh
@@ -27,7 +28,7 @@
       ffmpeg-full
       openboardview
       obs-studio
-      okular
+      kdePackages.okular
       kicad
       (heroic.override { extraPkgs = pkgs: with pkgs; [ gamescope gamemode ]; })
       bambu-studio

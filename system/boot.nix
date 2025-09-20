@@ -23,8 +23,9 @@
     };
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
+  boot.kernelPackages = pkgs.linuxPackages_cachyos-gcc;
   services.scx.enable = true;
+
   boot.kernelParams = [
     "nvidia_drm.fbdev=1"
     "nvidia-drm.modeset=1"
