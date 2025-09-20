@@ -23,6 +23,7 @@
       htop
       protonup-qt
       protontricks
+      popsicle
       lutris
       yt-dlp
       ffmpeg-full
@@ -39,7 +40,7 @@
 
     username = "brunostjohn";
     homeDirectory = "/home/brunostjohn";
-    stateVersion = "24.11";
+    stateVersion = "25.05";
   };
   programs.home-manager.enable = true;
 }
