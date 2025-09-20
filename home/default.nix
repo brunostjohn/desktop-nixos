@@ -6,6 +6,10 @@
   home = {
     packages = with pkgs; [
       fastfetch
+      kubectl
+      kubectl-cnpg
+      krew
+      lens
       code-cursor
       bat
       nixfmt-classic
