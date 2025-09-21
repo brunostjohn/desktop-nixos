@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, inputs, ... }:
 
 {
   imports = [ ./kde.nix ./zen.nix ./zsh.nix ./git.nix ];
@@ -10,7 +10,7 @@
       kubectl-cnpg
       krew
       lens
-      code-cursor
+      pkgs.unstable.code-cursor
       bat
       nixfmt-classic
       nixd
