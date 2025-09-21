@@ -40,6 +40,7 @@
       pokeget-rs
       linux-wallpaperengine
       discord
+      lmstudio
     ];
 
     username = "brunostjohn";
