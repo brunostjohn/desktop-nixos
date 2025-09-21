@@ -41,6 +41,7 @@
       linux-wallpaperengine
       discord
       lmstudio
+      llama-cpp
     ];
 
     username = "brunostjohn";
