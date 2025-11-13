@@ -9,7 +9,10 @@
     grub = {
       enable = true;
       efiSupport = true;
-      devices = [ "nodev" ];
+      forceInstall = true;
+      gfxmodeEfi = "3440x1440";
+      gfxpayloadEfi = "3440x1440";
+      devices = [ "/dev/disk/by-uuid/55E5-6FB8" ];
       extraEntries = ''
         menuentry "Windows" {
           insmod part_gpt
