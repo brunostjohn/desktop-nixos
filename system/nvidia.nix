@@ -8,8 +8,7 @@
   };
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  hardware.nvidia.package =
-    config.boot.kernelPackages.nvidiaPackages.production;
+  hardware.nvidia.package = config.boot.kernelPackages.nvidiaPackages.stable;
 
   hardware.nvidia.open = true;
   boot.initrd.kernelModules = [ "nvidia" ];

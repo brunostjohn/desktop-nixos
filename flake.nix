@@ -44,6 +44,10 @@
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
       modules = [
+        ./system
+        chaotic.nixosModules.nyx-cache
+        chaotic.nixosModules.nyx-overlay
+        chaotic.nixosModules.nyx-registry
         home-manager.nixosModules.home-manager
         {
           home-manager.sharedModules = [
@@ -56,10 +60,6 @@
           home-manager.users.brunostjohn = import ./home;
           home-manager.extraSpecialArgs = { inherit inputs; };
         }
-        ./system
-        chaotic.nixosModules.nyx-cache
-        chaotic.nixosModules.nyx-overlay
-        chaotic.nixosModules.nyx-registry
       ];
     };
   };
