@@ -30,6 +30,9 @@
   services.scx.enable = true;
   services.fwupd.enable = true;
 
+  boot.consoleLogLevel = 3;
+  boot.initrd.verbose = false;
+
   boot.kernelParams = [
     "nvidia_drm.fbdev=1"
     "nvidia-drm.modeset=1"
