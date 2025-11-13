@@ -12,6 +12,11 @@
     dates = "weekly";
     options = "--delete-older-than 15d";
   };
+  nix.extraOptions = ''
+    min-free = ${toString (100 * 1024 * 1024)}
+    max-free = ${toString (1024 * 1024 * 1024)}
+  '';
+
   nixpkgs.config.allowUnfree = true;
   nix.optimise.automatic = true;
   nix.optimise.dates = [ "03:45" ];
