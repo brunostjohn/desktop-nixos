@@ -23,8 +23,9 @@
     };
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_cachyos-gcc;
+  boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
   services.scx.enable = true;
+  services.fwupd.enable = true;
 
   boot.kernelParams = [
     "nvidia_drm.fbdev=1"
@@ -35,6 +36,9 @@
     "boot.shell_on_fail"
     "udev.log_priority=3"
     "rd.systemd.show_status=auto"
+    "preempt=full"
+    "threadirqs"
+    "microcode.amd_sha_check=off"
   ];
   boot.kernelModules = [ "ntsync" ];
   boot.plymouth = {

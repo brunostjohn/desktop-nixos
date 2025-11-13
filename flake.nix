@@ -3,6 +3,7 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+    ucodenix.url = "github:e-tho/ucodenix";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
@@ -43,20 +44,6 @@
       system = "x86_64-linux";
       specialArgs = { inherit inputs; };
       modules = [
-        {
-          nixpkgs.overlays = [
-            (final: _: {
-              unstable = import inputs.nixpkgs-unstable {
-                inherit (final.stdenv.hostPlatform) system;
-                inherit (final) config;
-              };
-            })
-          ];
-        }
-        ./system
-        chaotic.nixosModules.nyx-cache
-        chaotic.nixosModules.nyx-overlay
-        chaotic.nixosModules.nyx-registry
         home-manager.nixosModules.home-manager
         {
           home-manager.sharedModules = [
@@ -69,6 +56,10 @@
           home-manager.users.brunostjohn = import ./home;
           home-manager.extraSpecialArgs = { inherit inputs; };
         }
+        ./system
+        chaotic.nixosModules.nyx-cache
+        chaotic.nixosModules.nyx-overlay
+        chaotic.nixosModules.nyx-registry
       ];
     };
   };

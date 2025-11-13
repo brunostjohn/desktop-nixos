@@ -10,7 +10,7 @@
       DisableAppUpdate = true;
       DisableFeedbackCommands = true;
       DisableFirefoxStudies = true;
-      DisablePocket = true; # save webs for later reading
+      DisablePocket = true;
       DisableTelemetry = true;
       DontCheckDefaultBrowser = true;
       NoDefaultBookmarks = true;

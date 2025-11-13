@@ -2,7 +2,7 @@
 
 let
   vulkan-hdr-layer = import ./vulkan-hdr-layer.nix { inherit pkgs; };
-  kernel = pkgs.linuxPackages_cachyos-gcc.kernel;
+  kernel = pkgs.linuxPackages_cachyos-lto.kernel;
 in {
   imports = [
     ./hardware-configuration.nix
@@ -18,11 +18,17 @@ in {
     ./wallpaper-engine-kde-plugin.nix
     inputs.nix-gaming.nixosModules.pipewireLowLatency
     inputs.nix-gaming.nixosModules.platformOptimizations
+    inputs.ucodenix.nixosModules.default
   ];
 
   nixpkgs.config.permittedInsecurePackages = [ "electron-33.4.11" ];
 
   services.fstrim.enable = true;
+
+  services.ucodenix = {
+    enable = true;
+    cpuModelId = "00B40F40";
+  };
 
   zramSwap = {
     enable = true;
@@ -47,6 +53,21 @@ in {
 
   system.modulesTree = [ (lib.getOutput "modules" kernel) ];
 
+  programs.nix-ld = {
+    enable = true;
+    libraries = with pkgs; [
+      stdenv.cc.cc
+      zlib
+      fuse3
+      icu
+      zlib
+      nss
+      openssl
+      curl
+      expat
+    ];
+  };
+
   environment.systemPackages =
     let nvidiaEnabled = lib.elem "nvidia" config.services.xserver.videoDrivers;
     in (with pkgs; [
@@ -59,9 +80,12 @@ in {
       vulkan-hdr-layer
       qt6.qtwebsockets
       qt6.qtmultimedia
-      # proton-cachyos_x86_64_v4
       nixpkgs-fmt
+      proton-cachyos_x86_64_v4
       qt6.qtwebengine
+      usbutils
+      pciutils
+      powertop
       (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
     ]) ++ lib.optionals nvidiaEnabled [
       (config.hardware.nvidia.package.settings.overrideAttrs (oldAttrs: {

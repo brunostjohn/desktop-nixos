@@ -13,4 +13,6 @@
     options = "--delete-older-than 15d";
   };
   nixpkgs.config.allowUnfree = true;
+  nix.optimise.automatic = true;
+  nix.optimise.dates = [ "03:45" ];
 }

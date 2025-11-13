@@ -1,6 +1,11 @@
 { pkgs, inputs, ... }:
 
-{
+let
+  unstable = import inputs.nixpkgs-unstable {
+    system = "x86_64-linux";
+    config = { allowUnfree = true; };
+  };
+in {
   imports = [ ./kde.nix ./zen.nix ./zsh.nix ./git.nix ];
 
   home = {
@@ -10,7 +15,7 @@
       kubectl-cnpg
       krew
       lens
-      pkgs.unstable.code-cursor
+      unstable.code-cursor
       bat
       nixfmt-classic
       nixd
@@ -34,13 +39,14 @@
       openboardview
       obs-studio
       kdePackages.okular
+      gparted
       kicad
       (heroic.override { extraPkgs = pkgs: with pkgs; [ gamescope gamemode ]; })
       bambu-studio
       pokeget-rs
       linux-wallpaperengine
       discord
-      lmstudio
+      unstable.lmstudio
       llama-cpp
     ];
 

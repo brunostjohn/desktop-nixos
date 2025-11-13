@@ -28,7 +28,7 @@ in {
         wallpaperenginetarget=/share/plasma/wallpapers/com.github.catsout.wallpaperEngineKde
         mkdir -p /home/brunostjohn/.local/share/plasma/wallpapers
         chown -R brunostjohn:users /home/brunostjohn/.local/share/plasma
-        ln -sf ${wallpaper-engine-kde-plugin}/$wallpaperenginetarget /home/brunostjohn/.local/$wallpaperenginetarget
+        ln -sfn ${wallpaper-engine-kde-plugin}/$wallpaperenginetarget /home/brunostjohn/.local/$wallpaperenginetarget
       '';
     };
   };
