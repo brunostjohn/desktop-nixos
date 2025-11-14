@@ -36,7 +36,7 @@
   boot.kernelParams = [
     "nvidia_drm.fbdev=1"
     "nvidia-drm.modeset=1"
-    "module_blacklist=i915"
+    "module_blacklist=amdgpu"
     "quiet"
     "splash"
     "boot.shell_on_fail"
