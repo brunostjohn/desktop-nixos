@@ -1,4 +1,4 @@
-{ pkgs, inputs, lib, config, ... }:
+{ pkgs, inputs, lib, ... }:
 
 let
   vulkan-hdr-layer = import ./vulkan-hdr-layer.nix { inherit pkgs; };
@@ -68,30 +68,24 @@ in {
     ];
   };
 
-  environment.systemPackages =
-    let nvidiaEnabled = lib.elem "nvidia" config.services.xserver.videoDrivers;
-    in (with pkgs; [
-      git
-      wget
-      lm_sensors
-      mangohud
-      kde-rounded-corners
-      inputs.kwin-force-blur.packages.${system}.default
-      vulkan-hdr-layer
-      qt6.qtwebsockets
-      qt6.qtmultimedia
-      nixpkgs-fmt
-      proton-cachyos_x86_64_v4
-      qt6.qtwebengine
-      usbutils
-      pciutils
-      powertop
-      (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
-    ]) ++ lib.optionals nvidiaEnabled [
-      (config.hardware.nvidia.package.settings.overrideAttrs (oldAttrs: {
-        buildInputs = oldAttrs.buildInputs ++ [ pkgs.vulkan-headers ];
-      }))
-    ];
+  environment.systemPackages = with pkgs; [
+    git
+    wget
+    lm_sensors
+    mangohud
+    kde-rounded-corners
+    inputs.kwin-force-blur.packages.${system}.default
+    vulkan-hdr-layer
+    qt6.qtwebsockets
+    qt6.qtmultimedia
+    nixpkgs-fmt
+    proton-cachyos_x86_64_v4
+    qt6.qtwebengine
+    usbutils
+    pciutils
+    powertop
+    (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
+  ];
 
   programs.appimage.enable = true;
   programs.appimage.binfmt = true;
