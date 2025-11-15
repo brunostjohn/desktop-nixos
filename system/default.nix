@@ -84,6 +84,7 @@ in {
     usbutils
     pciutils
     powertop
+    apple-cursor
     (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
   ];
 

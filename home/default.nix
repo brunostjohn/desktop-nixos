@@ -9,6 +9,7 @@ in {
   imports = [ ./kde.nix ./zen.nix ./zsh.nix ./git.nix ];
 
   home = {
+    file.".icons/default".source = "${pkgs.apple-cursor}/share/icons";
     packages = with pkgs; [
       fastfetch
       kubectl

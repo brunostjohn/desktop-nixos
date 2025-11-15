@@ -10,7 +10,8 @@
     dedicatedServer.openFirewall = true;
     localNetworkGameTransfers.openFirewall = true;
     platformOptimizations.enable = true;
-    package =
-      pkgs.steam.override { extraPkgs = (pkgs: with pkgs; [ gamemode ]); };
+    package = pkgs.steam.override {
+      extraPkgs = (pkgs: with pkgs; [ gamemode apple-cursor ]);
+    };
   };
 }
