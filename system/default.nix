@@ -79,7 +79,7 @@ in {
     pciutils
     powertop
     apple-cursor
-    kdePackages.wallpaper-engine-plugin
+    # kdePackages.wallpaper-engine-plugin
     (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
   ];
 
