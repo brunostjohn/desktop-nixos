@@ -4,7 +4,7 @@
   fonts = {
     fontDir.enable = true;
     packages = with pkgs; [
-      inputs.apple-emoji.packages.${pkgs.system}.apple-emoji-linux
+      inputs.apple-emoji.packages.${pkgs.stdenv.hostPlatform.system}.apple-emoji-linux
       noto-fonts
       noto-fonts-cjk-sans
       dejavu_fonts

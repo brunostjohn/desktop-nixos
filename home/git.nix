@@ -3,9 +3,12 @@
 {
   programs.git = {
     enable = true;
-    userName = "Bruno St John";
-    userEmail = "brunost.john@icloud.com";
-    extraConfig = {
+    settings = {
+      user = {
+        name = "Bruno St John";
+        email = "brunost.john@icloud.com";
+      };
+
       init.defaultBranch = "main";
       push = { autoSetupRemote = true; };
       credential.helper = "${

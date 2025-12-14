@@ -2,11 +2,11 @@
 
 let
   nvidia-package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
-    version = "580.105.08";
-    sha256_64bit = "sha256-2cboGIZy8+t03QTPpp3VhHn6HQFiyMKMjRdiV2MpNHU=";
+    version = "590.44.01";
+    sha256_64bit = "sha256-VbkVaKwElaazojfxkHnz/nN/5olk13ezkw/EQjhKPms=";
     sha256_aarch64 = lib.fakeHash;
-    openSha256 = "sha256-FGmMt3ShQrw4q6wsk8DSvm96ie5yELoDFYinSlGZcwQ=";
-    settingsSha256 = lib.fakeHash;
+    openSha256 = "sha256-ft8FEnBotC9Bl+o4vQA1rWFuRe7gviD/j1B8t0MRL/o=";
+    settingsSha256 = "sha256-wVf1hku1l5OACiBeIePUMeZTWDQ4ueNvIk6BsW/RmF4=";
     persistencedSha256 = lib.fakeHash;
   };
 in {
@@ -17,13 +17,17 @@ in {
   };
   services.xserver.videoDrivers = [ "nvidia" ];
 
-  hardware.nvidia.package = nvidia-package;
+  hardware.nvidia = {
+    package = nvidia-package;
 
-  hardware.nvidia.open = true;
+    open = true;
+    modesetting.enable = true;
+    nvidiaSettings = true;
+  };
+
   boot.initrd.kernelModules = [ "nvidia" ];
   boot.extraModulePackages = [ nvidia-package ];
+
   hardware.nvidia-container-toolkit.enable = true;
   virtualisation.docker.daemon.settings.features.cdi = true;
-  hardware.nvidia.modesetting.enable = true;
-  hardware.nvidia.nvidiaSettings = false;
 }

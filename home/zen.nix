@@ -18,7 +18,7 @@
     };
     profiles.brunostjohn = {
       extensions.packages =
-        with inputs.firefox-addons.packages.${pkgs.system}; [
+        with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
           ublock-origin
           dearrow
           istilldontcareaboutcookies

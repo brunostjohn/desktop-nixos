@@ -1,6 +1,9 @@
-{ pkgs, ... }:
+{ pkgs, lib, ... }:
 
-{
+let
+  kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
+  kernelModules = kernelPackages.kernel;
+in {
   boot.loader = {
     efi = {
       canTouchEfiVariables = true;
@@ -26,8 +29,12 @@
     };
   };
 
-  boot.kernelPackages = pkgs.linuxPackages_cachyos-lto;
+  boot.kernelPackages = kernelPackages;
+  system.modulesTree = [ (lib.getOutput "modules" kernelModules) ];
+
   services.scx.enable = true;
+  services.scx.scheduler = "scx_lavd";
+
   services.fwupd.enable = true;
 
   boot.consoleLogLevel = 3;

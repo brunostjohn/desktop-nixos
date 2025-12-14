@@ -21,6 +21,7 @@ in {
       nixfmt-classic
       nixd
       gh
+      btop-cuda
       ghostty
       zip
       xz
