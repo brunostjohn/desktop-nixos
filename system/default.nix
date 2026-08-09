@@ -1,18 +1,15 @@
 { pkgs, inputs, ... }:
 
-let
-  vulkan-hdr-layer = import ./vulkan-hdr-layer.nix { inherit pkgs; };
-  unstable = import inputs.nixpkgs-unstable {
-    system = "x86_64-linux";
-    config = { allowUnfree = true; };
-  };
-  codexCli =
-    inputs.codex-cli-nix.packages.${pkgs.stdenv.hostPlatform.system}.default;
-in {
-  nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlay ];
-
-  nixpkgs.config.permittedInsecurePackages =
-    [ "docker-28.5.2" "electron-39.8.10" ];
+{
+  nixpkgs.overlays = [
+    inputs.nix-cachyos-kernel.overlay
+    (final: _prev: {
+      unstable = import inputs.nixpkgs-unstable {
+        inherit (final.stdenv.hostPlatform) system;
+        inherit (final) config;
+      };
+    })
+  ];
 
   imports = [
     ./hardware-configuration.nix
@@ -20,11 +17,13 @@ in {
     ./fonts.nix
     ./nix-setup.nix
     ./boot.nix
+    ./performance.nix
     ./i18n.nix
     ./sound.nix
     ./gaming.nix
     ./user.nix
     ./networking.nix
+    ./ssh.nix
     inputs.nix-gaming.nixosModules.pipewireLowLatency
     inputs.nix-gaming.nixosModules.platformOptimizations
     inputs.ucodenix.nixosModules.default
@@ -39,7 +38,9 @@ in {
 
   zramSwap = {
     enable = true;
-    algorithm = "lz4";
+    algorithm = "zstd";
+    memoryPercent = 50;
+    priority = 100;
   };
 
   hardware.bluetooth.enable = true;
@@ -65,7 +66,6 @@ in {
       zlib
       fuse3
       icu
-      zlib
       nss
       openssl
       curl
@@ -74,22 +74,17 @@ in {
   };
 
   environment.systemPackages = with pkgs; [
-    git
+    gitFull
     wget
     lm_sensors
     mangohud
     kde-rounded-corners
-    inputs.kwin-force-blur.packages.${stdenv.hostPlatform.system}.default
-    vulkan-hdr-layer
-    qt6.qtwebsockets
-    qt6.qtmultimedia
-    nixpkgs-fmt
-    qt6.qtwebengine
+    inputs.kwin-better-blur.packages.${stdenv.hostPlatform.system}.default
+    kdePackages.wallpaper-engine-plugin
     usbutils
     pciutils
     powertop
     apple-cursor
-    alvr
     bun
     corepack_24
     node-gyp
@@ -97,8 +92,9 @@ in {
     pnpm
     pnpm-shell-completion
     nodejs_24
-    (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
   ];
+
+  programs.alvr.enable = true;
 
   programs.appimage.enable = true;
   programs.appimage.binfmt = true;

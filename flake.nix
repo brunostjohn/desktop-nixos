@@ -2,15 +2,12 @@
   description = "System configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     ucodenix.url = "github:e-tho/ucodenix";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nix-cachyos-kernel = {
-      url = "github:xddxdd/nix-cachyos-kernel";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
-    };
+    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     plasma-manager = {
@@ -35,15 +32,12 @@
       url = "github:samuelngs/apple-emoji-linux/v1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    kwin-force-blur = {
-      url =
-        "github:taj-ny/kwin-effects-forceblur?ref=fea9f80f27389aa8a62befb5babf40b28fed328d";
+    kwin-better-blur = {
+      url = "github:xarblu/kwin-effects-better-blur-dx";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    codex-cli-nix = {
-      url = "github:sadjow/codex-cli-nix/main";
-      inputs = { nixpkgs.follows = "nixpkgs"; };
-    };
+    codex-desktop-linux.url =
+      "github:ilysenko/codex-desktop-linux/be1acdb57c1a288f3d0a5b677b070482494f36fd";
   };
 
   outputs = { self, nixpkgs, home-manager, ... }@inputs: {
@@ -57,6 +51,7 @@
           home-manager.sharedModules = [
             inputs.plasma-manager.homeModules.plasma-manager
             inputs.zen-browser.homeModules.twilight
+            inputs.codex-desktop-linux.homeManagerModules.default
           ];
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;

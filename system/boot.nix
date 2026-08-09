@@ -1,9 +1,6 @@
-{ pkgs, lib, ... }:
+{ pkgs, ... }:
 
-let
-  kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto;
-  kernelModules = kernelPackages.kernel;
-in {
+{
   boot.loader = {
     efi = {
       canTouchEfiVariables = true;
@@ -29,11 +26,13 @@ in {
     };
   };
 
-  boot.kernelPackages = kernelPackages;
-  system.modulesTree = [ (lib.getOutput "modules" kernelModules) ];
+  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto-zen4;
 
-  services.scx.enable = true;
-  services.scx.scheduler = "scx_lavd";
+  services.scx = {
+    enable = true;
+    scheduler = "scx_lavd";
+    extraArgs = [ "--performance" ];
+  };
 
   services.fwupd.enable = true;
 
@@ -45,13 +44,12 @@ in {
     "nvidia-drm.modeset=1"
     "module_blacklist=amdgpu"
     "quiet"
-    "splash"
     "boot.shell_on_fail"
     "udev.log_priority=3"
     "rd.systemd.show_status=auto"
-    "preempt=full"
-    "threadirqs"
     "microcode.amd_sha_check=off"
+    "zswap.enabled=0"
+    "amd_pstate=active"
   ];
   boot.kernelModules = [ "ntsync" ];
   boot.plymouth = {

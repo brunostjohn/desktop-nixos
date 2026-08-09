@@ -1,13 +1,6 @@
-{ pkgs, inputs, ... }:
+{ pkgs, ... }:
 
-let
-  unstable = import inputs.nixpkgs-unstable {
-    system = "x86_64-linux";
-    config = { allowUnfree = true; };
-  };
-  codexCli =
-    inputs.codex-cli-nix.packages.${pkgs.stdenv.hostPlatform.system}.default;
-in {
+{
   imports = [ ./kde.nix ./zen.nix ./zsh.nix ./git.nix ];
 
   home = {
@@ -20,7 +13,7 @@ in {
       lens
       unstable.code-cursor
       bat
-      nixfmt-classic
+      nixfmt
       nixd
       gh
       btop-cuda
@@ -35,24 +28,22 @@ in {
       prismlauncher
       htop
       protonup-qt
-      protontricks
       popsicle
       lutris
+      umu-launcher
       yt-dlp
       ffmpeg-full
       openboardview
       obs-studio
       kdePackages.okular
       gparted
-      kicad
+      jdk25
       (heroic.override { extraPkgs = pkgs: with pkgs; [ gamescope gamemode ]; })
-      bambu-studio
       pokeget-rs
-      linux-wallpaperengine
       discord
       unstable.lmstudio
       llama-cpp
-      codexCli
+      unstable.codex
     ];
 
     username = "brunostjohn";
@@ -60,4 +51,35 @@ in {
     stateVersion = "25.05";
   };
   programs.home-manager.enable = true;
+
+  programs.mangohud = {
+    enable = true;
+    settings = {
+      fps = true;
+      frametime = true;
+      frame_timing = 1;
+      gpu_stats = true;
+      gpu_temp = true;
+      gpu_power = true;
+      gpu_load_change = true;
+      cpu_stats = true;
+      cpu_temp = true;
+      cpu_load_change = true;
+      vram = true;
+      ram = true;
+      frame_count = false;
+      histogram = true;
+      round_corners = 8;
+      background_alpha = 0.4;
+      font_size = 20;
+      position = "top-left";
+      toggle_hud = "Shift_R+F12";
+      toggle_logging = "Shift_L+F2";
+    };
+  };
+
+  programs.codexDesktopLinux = {
+    enable = true;
+    cliPackage = pkgs.unstable.codex;
+  };
 }

@@ -3,6 +3,7 @@
 {
   programs.zen-browser = {
     enable = true;
+    setAsDefaultBrowser = true;
     nativeMessagingHosts = [ pkgs.firefoxpwa ];
     policies = {
       AutofillAddressEnabled = true;
@@ -70,12 +71,5 @@
         "font.name-list.emoji" = "Apple Color Emoji";
       };
     };
-  };
-  xdg.mimeApps.defaultApplications = {
-    "text/html" = [ "zen-beta.desktop" ];
-    "text/xml" = [ "zen-beta.desktop" ];
-    "text/svg" = [ "zen-beta.desktop" ];
-    "x-scheme-handler/http" = [ "zen-beta.desktop" ];
-    "x-scheme-handler/https" = [ "zen-beta.desktop" ];
   };
 }
