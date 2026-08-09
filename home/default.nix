@@ -5,6 +5,8 @@ let
     system = "x86_64-linux";
     config = { allowUnfree = true; };
   };
+  codexCli =
+    inputs.codex-cli-nix.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in {
   imports = [ ./kde.nix ./zen.nix ./zsh.nix ./git.nix ];
 
@@ -50,6 +52,7 @@ in {
       discord
       unstable.lmstudio
       llama-cpp
+      codexCli
     ];
 
     username = "brunostjohn";

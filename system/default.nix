@@ -1,8 +1,18 @@
 { pkgs, inputs, ... }:
 
-let vulkan-hdr-layer = import ./vulkan-hdr-layer.nix { inherit pkgs; };
+let
+  vulkan-hdr-layer = import ./vulkan-hdr-layer.nix { inherit pkgs; };
+  unstable = import inputs.nixpkgs-unstable {
+    system = "x86_64-linux";
+    config = { allowUnfree = true; };
+  };
+  codexCli =
+    inputs.codex-cli-nix.packages.${pkgs.stdenv.hostPlatform.system}.default;
 in {
   nixpkgs.overlays = [ inputs.nix-cachyos-kernel.overlay ];
+
+  nixpkgs.config.permittedInsecurePackages =
+    [ "docker-28.5.2" "electron-39.8.10" ];
 
   imports = [
     ./hardware-configuration.nix
@@ -79,7 +89,14 @@ in {
     pciutils
     powertop
     apple-cursor
-    # kdePackages.wallpaper-engine-plugin
+    alvr
+    bun
+    corepack_24
+    node-gyp
+    node-pre-gyp
+    pnpm
+    pnpm-shell-completion
+    nodejs_24
     (python3.withPackages (python-pkgs: [ python-pkgs.websockets ]))
   ];
 

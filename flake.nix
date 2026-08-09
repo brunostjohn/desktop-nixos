@@ -32,13 +32,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     apple-emoji = {
-      url = "github:samuelngs/apple-emoji-linux";
+      url = "github:samuelngs/apple-emoji-linux/v1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     kwin-force-blur = {
       url =
         "github:taj-ny/kwin-effects-forceblur?ref=fea9f80f27389aa8a62befb5babf40b28fed328d";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+    codex-cli-nix = {
+      url = "github:sadjow/codex-cli-nix/main";
+      inputs = { nixpkgs.follows = "nixpkgs"; };
     };
   };
 
@@ -52,7 +56,7 @@
         {
           home-manager.sharedModules = [
             inputs.plasma-manager.homeModules.plasma-manager
-            inputs.zen-browser.homeModules.beta
+            inputs.zen-browser.homeModules.twilight
           ];
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
