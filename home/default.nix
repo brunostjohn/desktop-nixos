@@ -1,7 +1,14 @@
 { pkgs, ... }:
 
 {
-  imports = [ ./kde.nix ./zen.nix ./zsh.nix ./git.nix ];
+  imports = [
+    ./gaming.nix
+    ./kde.nix
+    ./waywallen.nix
+    ./zen.nix
+    ./zsh.nix
+    ./git.nix
+  ];
 
   home = {
     file.".icons/default".source = "${pkgs.apple-cursor}/share/icons";
@@ -25,7 +32,6 @@
       apple-cursor
       caprine-bin
       signal-desktop
-      prismlauncher
       htop
       protonup-qt
       popsicle
@@ -38,7 +44,13 @@
       kdePackages.okular
       gparted
       jdk25
-      (heroic.override { extraPkgs = pkgs: with pkgs; [ gamescope gamemode ]; })
+      (heroic.override {
+        extraPkgs =
+          pkgs: with pkgs; [
+            gamescope
+            gamemode
+          ];
+      })
       pokeget-rs
       discord
       unstable.lmstudio

@@ -1,18 +1,19 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
 {
   boot.loader = {
     efi = {
       canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot/efi";
+      efiSysMountPoint = "/boot";
     };
     grub = {
       enable = true;
       efiSupport = true;
-      forceInstall = true;
+      devices = [ "nodev" ];
+      forceInstall = false;
+      configurationLimit = 2;
       gfxmodeEfi = "3440x1440";
       gfxpayloadEfi = "3440x1440";
-      devices = [ "/dev/disk/by-uuid/55E5-6FB8" ];
       extraEntries = ''
         menuentry "Windows" {
           insmod part_gpt
@@ -26,12 +27,22 @@
     };
   };
 
-  boot.kernelPackages = pkgs.cachyosKernels.linuxPackages-cachyos-bore-lto-zen4;
+  boot.kernelPackages = pkgs.linuxPackages_cachyos-lto-znver4;
+
+  specialisation.lts-rescue.configuration = {
+    system.nixos.tags = [ "lts-rescue" ];
+    boot.kernelPackages = lib.mkForce pkgs.linuxPackages_cachyos-lts;
+    hardware.nvidia.package = lib.mkForce pkgs.nvidia_cachyos-lts;
+    hardware.nvidia.open = lib.mkForce true;
+    services.scx.enable = lib.mkForce false;
+    services.lact.enable = lib.mkForce false;
+    boot.plymouth.enable = lib.mkForce false;
+  };
 
   services.scx = {
     enable = true;
     scheduler = "scx_lavd";
-    extraArgs = [ "--performance" ];
+    extraArgs = [ "--autopower" ];
   };
 
   services.fwupd.enable = true;
@@ -42,12 +53,10 @@
   boot.kernelParams = [
     "nvidia_drm.fbdev=1"
     "nvidia-drm.modeset=1"
-    "module_blacklist=amdgpu"
     "quiet"
     "boot.shell_on_fail"
     "udev.log_priority=3"
     "rd.systemd.show_status=auto"
-    "microcode.amd_sha_check=off"
     "zswap.enabled=0"
     "amd_pstate=active"
   ];

@@ -3,9 +3,8 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-    ucodenix.url = "github:e-tho/ucodenix";
     nixpkgs-unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
-    nix-cachyos-kernel.url = "github:xddxdd/nix-cachyos-kernel/release";
+    chaotic.url = "github:chaotic-cx/nyx/nyxpkgs-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -36,29 +35,67 @@
       url = "github:xarblu/kwin-effects-better-blur-dx";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    codex-desktop-linux.url =
-      "github:ilysenko/codex-desktop-linux/be1acdb57c1a288f3d0a5b677b070482494f36fd";
+    codex-desktop-linux.url = "github:ilysenko/codex-desktop-linux/be1acdb57c1a288f3d0a5b677b070482494f36fd";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
-    nixosConfigurations.catpaws = nixpkgs.lib.nixosSystem {
+  outputs =
+    {
+      self,
+      nixpkgs,
+      home-manager,
+      ...
+    }@inputs:
+    let
       system = "x86_64-linux";
-      specialArgs = { inherit inputs; };
-      modules = [
-        ./system
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.sharedModules = [
-            inputs.plasma-manager.homeModules.plasma-manager
-            inputs.zen-browser.homeModules.twilight
-            inputs.codex-desktop-linux.homeManagerModules.default
-          ];
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
-          home-manager.users.brunostjohn = import ./home;
-          home-manager.extraSpecialArgs = { inherit inputs; };
-        }
-      ];
+      catpaws = nixpkgs.lib.nixosSystem {
+        inherit system;
+        specialArgs = { inherit inputs; };
+        modules = [
+          inputs.chaotic.nixosModules.nyx-cache
+          inputs.chaotic.nixosModules.nyx-overlay
+          inputs.chaotic.nixosModules.nyx-registry
+          ./system
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.sharedModules = [
+              inputs.plasma-manager.homeModules.plasma-manager
+              inputs.zen-browser.homeModules.twilight
+              inputs.codex-desktop-linux.homeManagerModules.default
+            ];
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
+            home-manager.users.brunostjohn = import ./home;
+            home-manager.extraSpecialArgs = { inherit inputs; };
+          }
+        ];
+      };
+      maintenance = catpaws.pkgs.writeShellApplication {
+        name = "nixos-maintenance";
+        runtimeInputs = with catpaws.pkgs; [
+          coreutils
+          git
+          gnugrep
+          jq
+          nix
+          nixos-rebuild
+          util-linux
+        ];
+        text = builtins.readFile ./scripts/nixos-maintenance.sh;
+      };
+    in
+    {
+      nixosConfigurations.catpaws = catpaws;
+
+      packages.${system} = {
+        main-kernel = catpaws.config.boot.kernelPackages.kernel;
+        rescue-kernel = catpaws.pkgs.linuxPackages_cachyos-lts.kernel;
+        nixos-maintenance = maintenance;
+      };
+
+      apps.${system}.nixos-maintenance = {
+        type = "app";
+        program = "${maintenance}/bin/nixos-maintenance";
+        meta.description = "Cache-guarded NixOS rebuild and update helper";
+      };
     };
-  };
 }

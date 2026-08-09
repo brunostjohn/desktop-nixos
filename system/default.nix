@@ -2,7 +2,6 @@
 
 {
   nixpkgs.overlays = [
-    inputs.nix-cachyos-kernel.overlay
     (final: _prev: {
       unstable = import inputs.nixpkgs-unstable {
         inherit (final.stdenv.hostPlatform) system;
@@ -26,15 +25,17 @@
     ./ssh.nix
     inputs.nix-gaming.nixosModules.pipewireLowLatency
     inputs.nix-gaming.nixosModules.platformOptimizations
-    inputs.ucodenix.nixosModules.default
   ];
 
   services.fstrim.enable = true;
 
-  services.ucodenix = {
+  services.btrfs.autoScrub = {
     enable = true;
-    cpuModelId = "00B40F40";
+    interval = "monthly";
+    fileSystems = [ "/home" ];
   };
+
+  services.smartd.enable = true;
 
   zramSwap = {
     enable = true;
@@ -80,7 +81,7 @@
     mangohud
     kde-rounded-corners
     inputs.kwin-better-blur.packages.${stdenv.hostPlatform.system}.default
-    kdePackages.wallpaper-engine-plugin
+    vulkan-tools
     usbutils
     pciutils
     powertop
@@ -92,6 +93,7 @@
     pnpm
     pnpm-shell-completion
     nodejs_24
+    tmux
   ];
 
   programs.alvr.enable = true;

@@ -8,9 +8,9 @@
   programs.steam = {
     enable = true;
 
-    remotePlay.openFirewall = true;
-    dedicatedServer.openFirewall = true;
-    localNetworkGameTransfers.openFirewall = true;
+    remotePlay.openFirewall = false;
+    dedicatedServer.openFirewall = false;
+    localNetworkGameTransfers.openFirewall = false;
 
     platformOptimizations.enable = true;
 
@@ -37,10 +37,23 @@
       };
 
       custom = {
-        start =
-          "${pkgs.power-profiles-daemon}/bin/powerprofilesctl set performance";
-        end = "${pkgs.power-profiles-daemon}/bin/powerprofilesctl set balanced";
+        start = "${pkgs.systemd}/bin/systemctl --user start gamemode-performance-profile.service";
+        end = "${pkgs.systemd}/bin/systemctl --user stop gamemode-performance-profile.service";
       };
+    };
+  };
+
+  systemd.user.services.gamemode-performance-profile = {
+    description = "Hold the performance power profile while GameMode is active";
+    bindsTo = [ "gamemoded.service" ];
+    partOf = [ "gamemoded.service" ];
+    after = [ "gamemoded.service" ];
+
+    serviceConfig = {
+      Type = "simple";
+      KillMode = "mixed";
+      TimeoutStopSec = "5s";
+      ExecStart = "${pkgs.power-profiles-daemon}/bin/powerprofilesctl launch --profile performance --reason GameMode-active --appid gamemode ${pkgs.coreutils}/bin/sleep infinity";
     };
   };
 }
