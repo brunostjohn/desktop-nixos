@@ -43,8 +43,6 @@
 let
   version = "0.3.2";
 
-  # waywallen-display versions independently of the daemon; 0.3.1 is its
-  # latest release and pairs with daemon 0.3.2.
   displayVersion = "0.3.1";
 
   appImage = fetchurl {
@@ -69,9 +67,6 @@ let
     zlib
   ];
 
-  # OWE 0.2.3 was linked against FFmpeg 7, while this Nixpkgs tracks FFmpeg 8.
-  # Extract only the matching libraries from the audited AppImage, then patch
-  # their secondary dependencies against Nix store paths.
   ffmpeg7Libraries = stdenv.mkDerivation {
     pname = "waywallen-ffmpeg7-runtime";
     inherit version;
@@ -190,8 +185,6 @@ let
       zlib
     ];
 
-    # Some bundled AppImage libraries expose these only as transitive
-    # dependencies, so keep their paths on every patched OWE executable.
     runtimeDependencies = [
       libdrm
       zlib
@@ -236,9 +229,6 @@ appimageTools.wrapType2 {
     cp -R ${kdeDisplay}/share/plasma/wallpapers "$out/share/plasma/"
     cp -R ${openWallpaperEngine}/share/waywallen/plugins "$out/share/waywallen/"
 
-    # DT_RPATH applies to the AppImage FFmpeg libraries' dependencies as well.
-    # It also keeps the scene renderer on the host Vulkan loader instead of the
-    # SwiftShader libvulkan shipped privately with the Chromium web renderer.
     sceneRenderer="$out/share/waywallen/plugins/org.waywallen.open-wallpaper-engine/bin/waywallen-wescene-renderer"
     chmod u+w "$sceneRenderer"
     ${patchelf}/bin/patchelf --force-rpath --set-rpath \

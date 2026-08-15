@@ -7,11 +7,9 @@
 
     substituters = [
       "https://nix-gaming.cachix.org"
-      "https://codex-desktop-linux.cachix.org"
     ];
     trusted-public-keys = [
       "nix-gaming.cachix.org-1:nbjlureqMbRAxR1gJ/f3hxemL9svXaZF/Ees8vCUUs4="
-      "codex-desktop-linux.cachix.org-1:nX/xy6AdK9hQE24A8ALGjkCKj2ObFmcnemiL5Cid4nk="
     ];
 
     fallback = false;

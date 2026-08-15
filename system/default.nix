@@ -23,6 +23,7 @@
     ./user.nix
     ./networking.nix
     ./ssh.nix
+    ./claude-desktop.nix
     inputs.nix-gaming.nixosModules.pipewireLowLatency
     inputs.nix-gaming.nixosModules.platformOptimizations
   ];

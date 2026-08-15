@@ -18,13 +18,12 @@
       OfferToSaveLogins = false;
     };
     profiles.brunostjohn = {
-      extensions.packages =
-        with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
-          ublock-origin
-          dearrow
-          istilldontcareaboutcookies
-          sponsorblock
-        ];
+      extensions.packages = with inputs.firefox-addons.packages.${pkgs.stdenv.hostPlatform.system}; [
+        ublock-origin
+        dearrow
+        istilldontcareaboutcookies
+        sponsorblock
+      ];
       settings = {
         "browser.download.useDownloadDir" = false;
         "browser.disableResetPrompt" = true;

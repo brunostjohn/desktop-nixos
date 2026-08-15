@@ -22,7 +22,9 @@
     enableDefaultPackages = false;
 
     fontconfig = {
-      defaultFonts = { emoji = [ "Apple Color Emoji" ]; };
+      defaultFonts = {
+        emoji = [ "Apple Color Emoji" ];
+      };
       useEmbeddedBitmaps = true;
       localConf = ''
         <?xml version="1.0"?>

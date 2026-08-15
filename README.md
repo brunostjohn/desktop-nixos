@@ -21,8 +21,35 @@ or unstaged edits. An update failure restores the original lock file. Reboot
 when ready; do not garbage-collect the previous generation until both the normal
 and `lts-rescue` entries have booted successfully.
 
-Codex Desktop remains pinned to a known cached revision. Run
-`scripts/latest-cached-codex-rev.sh` before changing that pin.
+## AI desktop apps
+
+Claude Desktop and ChatGPT Desktop are repacked in-repo from the vendors'
+official `.deb` releases (`packages/claude-desktop.nix`,
+`packages/chatgpt-desktop.nix`); the Claude Code CLI comes from Nixpkgs. None of
+them is a flake input, so `nix flake update` never churns them.
+
+Run `nix run .#update-ai-desktops` to bump both pins from the upstream apt
+indexes, or `--check` to report staleness without writing. Anthropic keeps every
+published version, so that pin can sit indefinitely. OpenAI prunes its pool after
+roughly one to two weeks, so a long-stale `chatgpt-desktop` pin will eventually
+fail to fetch; that is what the bump is for.
+
+Cowork's micro-VM needs the FHS paths and kernel module wired up in
+`system/claude-desktop.nix`.
+
+The ChatGPT payload needs two repairs after `autoPatchelfHook` has run, both in
+`packages/chatgpt-elf-fixups.cjs`. Its bundled `detect-libc` reads only the first
+2 KiB of `/proc/self/exe` to find `PT_INTERP`, and patchelf leaves that at the end
+of a 315 MB binary, so libc detection falls through to
+`process.report.getReport()` — which traps with `SIGILL` inside Electron and kills
+the app seconds after launch; the interpreter string is moved back into patchelf's
+own padding. Separately, patchelf corrupts `DT_INIT` in the bundled libvips, so
+that one library is restored untouched or `require("sharp")` segfaults and takes
+computer use, screenshots and OCR with it. Neither fault is visible to `ldd`, so
+`installCheckPhase` re-checks both and loads `sharp` before the build is allowed
+to succeed. A pin bump that trips those checks means the payload changed shape,
+not that the checks are wrong. Build either app on its own with
+`nix build .#chatgpt-desktop` / `.#claude-desktop`.
 
 ## Gaming notes
 

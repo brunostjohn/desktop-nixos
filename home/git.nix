@@ -12,7 +12,9 @@
       };
 
       init.defaultBranch = "main";
-      push = { autoSetupRemote = true; };
+      push = {
+        autoSetupRemote = true;
+      };
       credential.helper = "libsecret";
     };
   };

@@ -16,9 +16,6 @@ let
     }).overrideAttrs
       (previous: {
         postPatch = (previous.postPatch or "") + ''
-          # Breeze ships 28 px spinner frames, which are too small on a
-          # 3440x1440 framebuffer. Keep the stock artwork and animation while
-          # producing a smooth 2x variant for the normal 32-bit renderer.
           for frame in breeze/images/spinner/*.png; do
             convert "$frame" -filter Lanczos -resize 200% PNG32:"$frame.scaled"
             mv "$frame.scaled" "$frame"

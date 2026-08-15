@@ -8,8 +8,6 @@
 let
   waywallen = pkgs.callPackage ../packages/waywallen.nix { };
   initialConfig = pkgs.writeText "waywallen-initial-config.toml" ''
-    # NVIDIA cannot use the OWE web renderer's shared-texture path reliably.
-    # Keep the old setup's quiet, 30 FPS behavior and render at 1440p.
     [plugin.wescene-renderer]
     enable_audio = "false"
     fps = "30"
@@ -25,8 +23,6 @@ in
 {
   home.packages = [ waywallen ];
 
-  # Seed the defaults once so the Waywallen UI can subsequently update its
-  # own configuration instead of being pointed at an immutable store file.
   home.activation.waywallenInitialConfig = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     waywallen_config_directory=${lib.escapeShellArg "${config.xdg.configHome}/waywallen"}
     waywallen_config_file="$waywallen_config_directory/config.toml"

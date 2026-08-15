@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./ai.nix
     ./gaming.nix
     ./kde.nix
     ./waywallen.nix
@@ -55,7 +56,6 @@
       discord
       unstable.lmstudio
       llama-cpp
-      unstable.codex
     ];
 
     username = "brunostjohn";
@@ -88,10 +88,5 @@
       toggle_hud = "Shift_R+F12";
       toggle_logging = "Shift_L+F2";
     };
-  };
-
-  programs.codexDesktopLinux = {
-    enable = true;
-    cliPackage = pkgs.unstable.codex;
   };
 }

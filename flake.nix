@@ -35,7 +35,6 @@
       url = "github:xarblu/kwin-effects-better-blur-dx";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    codex-desktop-linux.url = "github:ilysenko/codex-desktop-linux/be1acdb57c1a288f3d0a5b677b070482494f36fd";
   };
 
   outputs =
@@ -60,7 +59,6 @@
             home-manager.sharedModules = [
               inputs.plasma-manager.homeModules.plasma-manager
               inputs.zen-browser.homeModules.twilight
-              inputs.codex-desktop-linux.homeManagerModules.default
             ];
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
@@ -82,6 +80,17 @@
         ];
         text = builtins.readFile ./scripts/nixos-maintenance.sh;
       };
+      updateAiDesktops = catpaws.pkgs.writeShellApplication {
+        name = "update-ai-desktops";
+        runtimeInputs = with catpaws.pkgs; [
+          coreutils
+          curl
+          gawk
+          gnused
+          nix
+        ];
+        text = builtins.readFile ./scripts/update-ai-desktops.sh;
+      };
     in
     {
       nixosConfigurations.catpaws = catpaws;
@@ -90,12 +99,25 @@
         main-kernel = catpaws.config.boot.kernelPackages.kernel;
         rescue-kernel = catpaws.pkgs.linuxPackages_cachyos-lts.kernel;
         nixos-maintenance = maintenance;
+        update-ai-desktops = updateAiDesktops;
+
+        # Also reachable through home/ai.nix; exposed here so a pin bump can be
+        # built and its payload audits exercised without a full rebuild.
+        claude-desktop = catpaws.pkgs.callPackage ./packages/claude-desktop.nix { };
+        chatgpt-desktop = catpaws.pkgs.callPackage ./packages/chatgpt-desktop.nix { };
       };
 
-      apps.${system}.nixos-maintenance = {
-        type = "app";
-        program = "${maintenance}/bin/nixos-maintenance";
-        meta.description = "Cache-guarded NixOS rebuild and update helper";
+      apps.${system} = {
+        nixos-maintenance = {
+          type = "app";
+          program = "${maintenance}/bin/nixos-maintenance";
+          meta.description = "Cache-guarded NixOS rebuild and update helper";
+        };
+        update-ai-desktops = {
+          type = "app";
+          program = "${updateAiDesktops}/bin/update-ai-desktops";
+          meta.description = "Bump the pinned Claude Desktop and ChatGPT Desktop builds";
+        };
       };
     };
 }

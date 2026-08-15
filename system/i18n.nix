@@ -2,7 +2,10 @@
   time.timeZone = "Europe/Dublin";
   i18n.defaultLocale = "en_IE.UTF-8";
 
-  i18n.extraLocales = [ "en_IE.UTF-8/UTF-8" "en_AU.UTF-8/UTF-8" ];
+  i18n.extraLocales = [
+    "en_IE.UTF-8/UTF-8"
+    "en_AU.UTF-8/UTF-8"
+  ];
 
   i18n.extraLocaleSettings = {
     LANGUAGE = "en_IE.UTF-8";

@@ -25,8 +25,6 @@
 
   services.lact.enable = true;
 
-  # Bring the native NVIDIA framebuffer up while Plymouth is still running.
-  # UVM is unrelated to display handoff and stays out of the initrd.
   boot.initrd.kernelModules = [
     "nvidia"
     "nvidia_modeset"

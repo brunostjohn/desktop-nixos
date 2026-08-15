@@ -7,7 +7,6 @@
       clickItemTo = "select";
       lookAndFeel = "org.kde.breezedark.desktop";
       cursor.theme = "macOS";
-      # iconTheme = "Papirus-Dark";
     };
     configFile = {
       "baloofilerc"."Basic Settings"."Indexing-Enabled" = false;
