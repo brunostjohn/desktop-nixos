@@ -41,11 +41,15 @@
 }:
 
 let
-  version = "0.3.1";
+  version = "0.3.2";
+
+  # waywallen-display versions independently of the daemon; 0.3.1 is its
+  # latest release and pairs with daemon 0.3.2.
+  displayVersion = "0.3.1";
 
   appImage = fetchurl {
     url = "https://github.com/waywallen/waywallen/releases/download/v${version}/waywallen-${version}-x86_64.AppImage";
-    hash = "sha256-R1m2gJ1OyOMRmg8AJF/YEDt1JmzQNfA/8BU/uL93oys=";
+    hash = "sha256-vUxfSaIjHqUD5aCXJIHlh0cmhtphP3NVNo1SQ5vaE3E=";
   };
 
   appImageContents = appimageTools.extractType2 {
@@ -107,11 +111,11 @@ let
 
   kdeDisplay = stdenv.mkDerivation {
     pname = "waywallen-kde-display";
-    inherit version;
+    version = displayVersion;
     dontWrapQtApps = true;
 
     src = fetchurl {
-      url = "https://github.com/waywallen/waywallen-display/releases/download/v${version}/waywallen-kde-${version}-x86_64-embed.zip";
+      url = "https://github.com/waywallen/waywallen-display/releases/download/v${displayVersion}/waywallen-kde-${displayVersion}-x86_64-embed.zip";
       hash = "sha256-6eb/4kRBMjIRYBvMK1XKGB33x7OSqyLKFrgBiFjYY6s=";
     };
 

@@ -25,7 +25,13 @@
 
   services.lact.enable = true;
 
-  boot.initrd.kernelModules = [ "nvidia" ];
+  # Bring the native NVIDIA framebuffer up while Plymouth is still running.
+  # UVM is unrelated to display handoff and stays out of the initrd.
+  boot.initrd.kernelModules = [
+    "nvidia"
+    "nvidia_modeset"
+    "nvidia_drm"
+  ];
 
   hardware.nvidia-container-toolkit.enable = true;
   virtualisation.docker.daemon.settings.features.cdi = true;
